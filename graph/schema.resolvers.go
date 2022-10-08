@@ -13,9 +13,10 @@ import (
 
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	if err := validate.Struct(input); err != nil {
+	if err := validateModel(input); err != nil {
 		return nil, err
 	}
+
 	return &model.Todo{
 		ID:   "NewTodoID",
 		Text: input.Text,
