@@ -221,6 +221,10 @@ var sources = []*ast.Source{
 #
 # https://gqlgen.com/getting-started/
 
+directive @constraint(
+  format: String
+) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+
 type Todo {
   id: ID!
   text: String!
@@ -238,8 +242,8 @@ type Query {
 }
 
 input NewTodo {
-  text: String!
-  userId: String!
+  text: String! @constraint(format: "required")
+  userId: String! @constraint(format: "required")
 }
 
 type Mutation {

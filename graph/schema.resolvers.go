@@ -13,7 +13,18 @@ import (
 
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+	if err := validate.Struct(input); err != nil {
+		return nil, err
+	}
+	return &model.Todo{
+		ID:   "NewTodoID",
+		Text: input.Text,
+		Done: false,
+		User: &model.User{
+			ID:   input.UserID,
+			Name: "UserName",
+		},
+	}, nil
 }
 
 // Todos is the resolver for the todos field.
