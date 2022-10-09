@@ -18,13 +18,13 @@ func validateModel(m any) *gqlerror.Error {
 	validationErrors, err := validation.ValidateModel(m)
 	if err != nil {
 		return &gqlerror.Error{
-			Message:    customerr.ErrorMessage(customerr.GQLErrorCodeInternalServerError),
+			Message:    customerr.ErrorMessage(customerr.InternalServerError),
 			Extensions: customerr.ExtensionInternalServerError(),
 		}
 	}
 	if len(validationErrors) > 0 {
 		return &gqlerror.Error{
-			Message:    customerr.ErrorMessage(customerr.GQLErrorCodeBadUserInput),
+			Message:    customerr.ErrorMessage(customerr.BadUserInput),
 			Extensions: customerr.ExtensionBadUserInput(validationErrors),
 		}
 	}

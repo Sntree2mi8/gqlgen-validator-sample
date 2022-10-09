@@ -1,37 +1,37 @@
 package customerr
 
-type GQLErrorCode string
+type errorCode string
 
 const (
-	defaultErrorMessage = "internal server error"
+	defaultErrorMsg string = "internal server error"
 
-	GQLErrorCodeBadUserInput        = "BAD_USER_INPUT"
-	gqlErrorCodeBadUserInputMessage = "invalid argument"
+	BadUserInput    errorCode = "BAD_USER_INPUT"
+	badUserInputMsg string    = "invalid argument"
 
-	GQLErrorCodeInternalServerError        = "INTERNAL_SERVER_ERROR"
-	gQLErrorCodeInternalServerErrorMessage = "internal server error"
+	InternalServerError    errorCode = "INTERNAL_SERVER_ERROR"
+	internalServerErrorMsg string    = "internal server error"
 )
 
-func ErrorMessage(e GQLErrorCode) string {
+func ErrorMessage(e errorCode) string {
 	switch e {
-	case GQLErrorCodeBadUserInput:
-		return gqlErrorCodeBadUserInputMessage
-	case GQLErrorCodeInternalServerError:
-		return gQLErrorCodeInternalServerErrorMessage
+	case BadUserInput:
+		return badUserInputMsg
+	case InternalServerError:
+		return internalServerErrorMsg
 	default:
-		return defaultErrorMessage
+		return defaultErrorMsg
 	}
 }
 
 func ExtensionBadUserInput(invalidFields map[string]string) map[string]any {
 	return map[string]any{
-		"code":          GQLErrorCodeBadUserInput,
+		"code":          BadUserInput,
 		"invalidFields": invalidFields,
 	}
 }
 
 func ExtensionInternalServerError() map[string]any {
 	return map[string]any{
-		"code": GQLErrorCodeInternalServerError,
+		"code": InternalServerError,
 	}
 }
