@@ -1,4 +1,4 @@
-package custom_hook
+package customhook
 
 import (
 	"github.com/99designs/gqlgen/plugin/modelgen"

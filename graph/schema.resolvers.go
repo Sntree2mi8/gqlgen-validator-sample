@@ -7,14 +7,33 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/Sntree2mi8/gqlgen-validator-sample/graph/customerr"
 	"github.com/Sntree2mi8/gqlgen-validator-sample/graph/generated"
 	"github.com/Sntree2mi8/gqlgen-validator-sample/graph/model"
 	"github.com/Sntree2mi8/gqlgen-validator-sample/graph/validation"
+	"github.com/vektah/gqlparser/v2/gqlerror"
 )
+
+func validateModel(m any) *gqlerror.Error {
+	validationErrors, err := validation.ValidateModel(m)
+	if err != nil {
+		return &gqlerror.Error{
+			Message:    customerr.ErrorMessage(customerr.GQLErrorCodeInternalServerError),
+			Extensions: customerr.ExtensionInternalServerError(),
+		}
+	}
+	if len(validationErrors) > 0 {
+		return &gqlerror.Error{
+			Message:    customerr.ErrorMessage(customerr.GQLErrorCodeBadUserInput),
+			Extensions: customerr.ExtensionBadUserInput(validationErrors),
+		}
+	}
+	return nil
+}
 
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	if err := validation.ValidateModel(input); err != nil {
+	if err := validateModel(input); err != nil {
 		return nil, err
 	}
 

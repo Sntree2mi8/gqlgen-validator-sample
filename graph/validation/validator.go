@@ -3,8 +3,6 @@ package validation
 import (
 	"fmt"
 	"github.com/go-playground/validator/v10"
-	"github.com/vektah/gqlparser/v2/gqlerror"
-	"log"
 )
 
 var validate *validator.Validate
@@ -23,25 +21,19 @@ func msgForTag(fe validator.FieldError) string {
 	return fe.Error()
 }
 
-func ValidateModel(model any) *gqlerror.Error {
+func ValidateModel(model any) (map[string]string, error) {
 	if err := validate.Struct(model); err != nil {
 		if _, ok := err.(*validator.InvalidValidationError); ok {
-			log.Printf("failed to validate model %+v", err)
-			return &gqlerror.Error{
-				Message: "internal server error",
-			}
+			return nil, err
 		}
 
 		errs := err.(validator.ValidationErrors)
-		validationErrors := make(map[string]any, len(errs))
+		validationErrors := make(map[string]string, len(errs))
 		for _, ve := range errs {
 			validationErrors[ve.Field()] = msgForTag(ve)
 		}
 
-		return &gqlerror.Error{
-			Message:    "validation error",
-			Extensions: validationErrors,
-		}
+		return validationErrors, nil
 	}
-	return nil
+	return nil, nil
 }

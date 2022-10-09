@@ -7,7 +7,7 @@ import (
 	"github.com/99designs/gqlgen/api"
 	"github.com/99designs/gqlgen/codegen/config"
 	"github.com/99designs/gqlgen/plugin/modelgen"
-	"github.com/Sntree2mi8/gqlgen-validator-sample/graph/custom_hook"
+	"github.com/Sntree2mi8/gqlgen-validator-sample/graph/customhook"
 )
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 
 	// Attaching the mutation function onto modelgen plugin
 	p := modelgen.Plugin{
-		FieldHook: custom_hook.ConstraintFieldHook,
+		FieldHook: customhook.ConstraintFieldHook,
 	}
 
 	err = api.Generate(cfg, api.ReplacePlugin(&p))
