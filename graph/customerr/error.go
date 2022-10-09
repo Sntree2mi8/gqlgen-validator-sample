@@ -23,14 +23,14 @@ func ErrorMessage(e errorCode) string {
 	}
 }
 
-func ExtensionBadUserInput(invalidFields map[string]string) map[string]any {
+func BadUserInputExtension(invalidFields map[string]string) map[string]any {
 	return map[string]any{
 		"code":          BadUserInput,
 		"invalidFields": invalidFields,
 	}
 }
 
-func ExtensionInternalServerError() map[string]any {
+func InternalServerErrorExtension() map[string]any {
 	return map[string]any{
 		"code": InternalServerError,
 	}

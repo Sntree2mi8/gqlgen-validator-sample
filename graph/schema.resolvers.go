@@ -14,18 +14,18 @@ import (
 	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
-func validateModel(m any) *gqlerror.Error {
+func validateInputModel(m any) *gqlerror.Error {
 	validationErrors, err := validation.ValidateModel(m)
 	if err != nil {
 		return &gqlerror.Error{
 			Message:    customerr.ErrorMessage(customerr.InternalServerError),
-			Extensions: customerr.ExtensionInternalServerError(),
+			Extensions: customerr.InternalServerErrorExtension(),
 		}
 	}
 	if len(validationErrors) > 0 {
 		return &gqlerror.Error{
 			Message:    customerr.ErrorMessage(customerr.BadUserInput),
-			Extensions: customerr.ExtensionBadUserInput(validationErrors),
+			Extensions: customerr.BadUserInputExtension(validationErrors),
 		}
 	}
 	return nil
@@ -33,7 +33,7 @@ func validateModel(m any) *gqlerror.Error {
 
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	if err := validateModel(input); err != nil {
+	if err := validateInputModel(input); err != nil {
 		return nil, err
 	}
 

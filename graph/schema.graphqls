@@ -2,6 +2,7 @@
 #
 # https://gqlgen.com/getting-started/
 
+# https://pkg.go.dev/github.com/go-playground/validator/v10
 directive @constraint(
   format: String
 ) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION
