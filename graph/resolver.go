@@ -1,5 +1,3 @@
-//go:generate go run ../cmd/gqlgenerate/main.go
-
 package graph
 
 // This file will not be regenerated automatically.
