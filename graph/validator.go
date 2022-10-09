@@ -12,6 +12,14 @@ func init() {
 	validate = validator.New()
 }
 
+func msgForTag(fe validator.FieldError) string {
+	switch fe.Tag() {
+	case "required":
+		return "This field is required"
+	}
+	return fe.Error() // default error
+}
+
 func validateModel(model any) *gqlerror.Error {
 	if err := validate.Struct(model); err != nil {
 		if _, ok := err.(*validator.InvalidValidationError); ok {
@@ -23,7 +31,7 @@ func validateModel(model any) *gqlerror.Error {
 
 		validationErrors := make(map[string]any, len(err.(validator.ValidationErrors)))
 		for _, ve := range err.(validator.ValidationErrors) {
-			validationErrors[ve.Field()] = ve.Error()
+			validationErrors[ve.Field()] = msgForTag(ve)
 		}
 
 		return &gqlerror.Error{
