@@ -242,7 +242,7 @@ type Query {
 }
 
 input NewTodo {
-  text: String! @constraint(format: "required")
+  text: String! @constraint(format: "required,len=10")
   userId: String! @constraint(format: "required")
 }
 

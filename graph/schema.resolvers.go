@@ -9,11 +9,12 @@ import (
 
 	"github.com/Sntree2mi8/gqlgen-validator-sample/graph/generated"
 	"github.com/Sntree2mi8/gqlgen-validator-sample/graph/model"
+	"github.com/Sntree2mi8/gqlgen-validator-sample/graph/validation"
 )
 
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	if err := validateModel(input); err != nil {
+	if err := validation.ValidateModel(input); err != nil {
 		return nil, err
 	}
 

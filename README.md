@@ -2,10 +2,16 @@
 
 [gqlgen](https://github.com/99designs/gqlgen)と[validator](https://github.com/go-playground/validator)を使っていい感じに手を抜くサンプル
 
+# Generate GraphQL code
+
+```
+go run ./cmd/gqlgenerate
+```
+
 # Run
 
 ```
-go run server.go
+go run ./cmd/server
 ```
 
 Then open playground
