@@ -3,7 +3,7 @@
 package model
 
 type NewTodo struct {
-	Text           string          `json:"text" validate:"required,len=10"`
+	Text           string          `json:"text" validate:"required,lte=10"`
 	UserID         string          `json:"userId" validate:"required"`
 	RepeatEveryDay *RepeatEveryDay `json:"repeatEveryDay"`
 }

@@ -7,9 +7,9 @@ import (
 	"regexp"
 )
 
-var validate *validator.Validate
-
 var (
+	validate *validator.Validate
+
 	hhmmRegex = regexp.MustCompile(`^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$`)
 )
 
@@ -31,9 +31,9 @@ func msgForTag(fe validator.FieldError) string {
 	case "len":
 		return fmt.Sprintf("%s文字で入力してください", fe.Param())
 	case "gte":
-		return fmt.Sprintf("%s以上の数字で入力してください", fe.Param())
+		return fmt.Sprintf("%s文字以上で入力してください", fe.Param())
 	case "lte":
-		return fmt.Sprintf("%s以下の数字で入力してください", fe.Param())
+		return fmt.Sprintf("%s文字以下で入力してください", fe.Param())
 	case "timezone":
 		return "IANA Time Zone databaseの形式で入力してください"
 	case "HH:mm":

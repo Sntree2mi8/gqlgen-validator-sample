@@ -2,10 +2,10 @@
 #
 # https://gqlgen.com/getting-started/
 
-# https://pkg.go.dev/github.com/go-playground/validator/v10
-directive @constraint(
+# Format must correspond to A.https://pkg.go.dev/github.com/go-playground/validator/v10
+directive @validation(
   format: String
-) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+) on INPUT_FIELD_DEFINITION
 
 type Todo {
   id: ID!
@@ -24,14 +24,14 @@ type Query {
 }
 
 input RepeatEveryDay {
-  days: Int! @constraint(format: "required,gte=1,lte=366")
-  time: String! @constraint(format: "required,HH:mm")
-  timezone: String! @constraint(format: "required,timezone")
+  days: Int! @validation(format: "required,gte=1,lte=366")
+  time: String! @validation(format: "required,HH:mm")
+  timezone: String! @validation(format: "required,timezone")
 }
 
 input NewTodo {
-  text: String! @constraint(format: "required,len=10")
-  userId: String! @constraint(format: "required")
+  text: String! @validation(format: "required,lte=10")
+  userId: String! @validation(format: "required")
   repeatEveryDay: RepeatEveryDay
 }
 

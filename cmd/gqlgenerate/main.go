@@ -19,7 +19,7 @@ func main() {
 
 	// Attaching the mutation function onto modelgen plugin
 	p := modelgen.Plugin{
-		FieldHook: customhook.ConstraintFieldHook,
+		FieldHook: customhook.ValidationFieldHook,
 	}
 
 	err = api.Generate(cfg, api.ReplacePlugin(&p))
