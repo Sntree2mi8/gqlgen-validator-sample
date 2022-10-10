@@ -23,9 +23,16 @@ type Query {
   todos: [Todo!]!
 }
 
+input RepeatEveryDay {
+  days: Int! @constraint(format: "required,gte=1,lte=366")
+  time: String! @constraint(format: "required,HH:mm")
+  timezone: String! @constraint(format: "required,timezone")
+}
+
 input NewTodo {
   text: String! @constraint(format: "required,len=10")
   userId: String! @constraint(format: "required")
+  repeatEveryDay: RepeatEveryDay
 }
 
 type Mutation {

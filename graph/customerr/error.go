@@ -6,7 +6,7 @@ const (
 	defaultErrorMsg string = "internal server error"
 
 	BadUserInput    errorCode = "BAD_USER_INPUT"
-	badUserInputMsg string    = "invalid argument"
+	badUserInputMsg string    = "invalid input"
 
 	InternalServerError    errorCode = "INTERNAL_SERVER_ERROR"
 	internalServerErrorMsg string    = "internal server error"

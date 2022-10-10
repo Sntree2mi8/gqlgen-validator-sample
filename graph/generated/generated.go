@@ -157,6 +157,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	ec := executionContext{rc, e}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputNewTodo,
+		ec.unmarshalInputRepeatEveryDay,
 	)
 	first := true
 
@@ -221,6 +222,7 @@ var sources = []*ast.Source{
 #
 # https://gqlgen.com/getting-started/
 
+# https://pkg.go.dev/github.com/go-playground/validator/v10
 directive @constraint(
   format: String
 ) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION
@@ -241,9 +243,16 @@ type Query {
   todos: [Todo!]!
 }
 
+input RepeatEveryDay {
+  days: Int! @constraint(format: "required,gte=1,lte=366")
+  time: String! @constraint(format: "required,hh:mm")
+  timezone: String! @constraint(format: "required,timezone")
+}
+
 input NewTodo {
   text: String! @constraint(format: "required,len=10")
   userId: String! @constraint(format: "required")
+  repeatEveryDay: RepeatEveryDay
 }
 
 type Mutation {
@@ -2623,7 +2632,7 @@ func (ec *executionContext) unmarshalInputNewTodo(ctx context.Context, obj inter
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"text", "userId"}
+	fieldsInOrder := [...]string{"text", "userId", "repeatEveryDay"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -2643,6 +2652,58 @@ func (ec *executionContext) unmarshalInputNewTodo(ctx context.Context, obj inter
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId"))
 			it.UserID, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "repeatEveryDay":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("repeatEveryDay"))
+			it.RepeatEveryDay, err = ec.unmarshalORepeatEveryDay2ᚖgithubᚗcomᚋSntree2mi8ᚋgqlgenᚑvalidatorᚑsampleᚋgraphᚋmodelᚐRepeatEveryDay(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputRepeatEveryDay(ctx context.Context, obj interface{}) (model.RepeatEveryDay, error) {
+	var it model.RepeatEveryDay
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"days", "time", "timezone"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "days":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("days"))
+			it.Days, err = ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "time":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("time"))
+			it.Time, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "timezone":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timezone"))
+			it.Timezone, err = ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -3196,6 +3257,21 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 	return res
 }
 
+func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v interface{}) (int, error) {
+	res, err := graphql.UnmarshalInt(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
+	res := graphql.MarshalInt(v)
+	if res == graphql.Null {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+	}
+	return res
+}
+
 func (ec *executionContext) unmarshalNNewTodo2githubᚗcomᚋSntree2mi8ᚋgqlgenᚑvalidatorᚑsampleᚋgraphᚋmodelᚐNewTodo(ctx context.Context, v interface{}) (model.NewTodo, error) {
 	res, err := ec.unmarshalInputNewTodo(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -3561,6 +3637,14 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	}
 	res := graphql.MarshalBoolean(*v)
 	return res
+}
+
+func (ec *executionContext) unmarshalORepeatEveryDay2ᚖgithubᚗcomᚋSntree2mi8ᚋgqlgenᚑvalidatorᚑsampleᚋgraphᚋmodelᚐRepeatEveryDay(ctx context.Context, v interface{}) (*model.RepeatEveryDay, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputRepeatEveryDay(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalOString2ᚖstring(ctx context.Context, v interface{}) (*string, error) {
